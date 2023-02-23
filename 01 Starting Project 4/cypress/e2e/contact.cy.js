@@ -3,10 +3,10 @@ describe('contact form', () => {
         cy.visit('/about');
 
         // ASSIGN ALIAS' TO INPUT EL's
-        cy.get('[data-cy="contact-input-message"]').as('inputMsg');
-        cy.get('[data-cy="contact-input-name"]').as('inputName');
-        cy.get('[data-cy="contact-input-email"]').as('inputEmail');
-        cy.get('[data-cy="contact-btn-submit"]').as('btnSubmit');
+        cy.getById('contact-input-message').as('inputMsg');
+        cy.getById('contact-input-name').as('inputName');
+        cy.getById('contact-input-email').as('inputEmail');
+        cy.getById('contact-btn-submit').as('btnSubmit');
     });
 
     it('should submit the form by clicking the send button', () => {

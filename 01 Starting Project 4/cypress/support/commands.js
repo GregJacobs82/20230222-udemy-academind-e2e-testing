@@ -28,3 +28,11 @@
 // Cypress.Commands.add('submitForm', () => {
 //     cy.get('[data-cy="contact-btn-submit"]').click();
 // })
+
+// VIDEO EXPLANATION: https://www.udemy.com/course/cypress-end-to-end-testing-getting-started/learn/lecture/36409648#overview
+Cypress.Commands.addQuery('getById', (id) => {
+    const getFn = cy.now('get', `[data-cy="${id}"]`);
+    return() => {
+        return getFn(); // const element = getFn(); return element;
+    }
+})
