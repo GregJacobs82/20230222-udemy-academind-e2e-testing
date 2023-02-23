@@ -54,23 +54,26 @@ describe('contact form', () => {
         cy.get('@inputMsg')
             .focus()
             .blur();
-        cy.get('@inputMsg').parent().then(el => {
-            expect(el.attr('class')).to.contains('invalid');
-        });
+        cy.get('@inputMsg')
+            .parent()
+            .should('have.attr', 'class')
+            .and('contains', 'invalid');
 
         cy.get('@inputName')
             .focus()
             .blur();
-        cy.get('@inputName').parent().then(el => {
-            expect(el.attr('class')).to.contains('invalid');
-        });
+        cy.get('@inputName')
+            .parent()
+            .should('have.attr', 'class')
+            .and('contains', 'invalid');
 
         cy.get('@inputEmail')
             .focus()
             .blur();
-        cy.get('@inputEmail').parent().then(el => {
-            expect(el.attr('class')).to.contains('invalid');
-        });
+        cy.get('@inputEmail')
+            .parent()
+            .should('have.attr', 'class')
+            .and('contains', 'invalid');
 
     })
 });
