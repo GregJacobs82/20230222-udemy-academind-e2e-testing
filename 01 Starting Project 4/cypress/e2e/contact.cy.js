@@ -1,6 +1,6 @@
 describe('contact form', () => {
     beforeEach(() => {
-        cy.visit('http://127.0.0.1:5173/about');
+        cy.visit('/about');
 
         // ASSIGN ALIAS' TO INPUT EL's
         cy.get('[data-cy="contact-input-message"]').as('inputMsg');
