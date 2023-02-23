@@ -72,8 +72,13 @@ describe('contact form', () => {
             .blur();
         cy.get('@inputEmail')
             .parent()
-            .should('have.attr', 'class')
-            .and('contains', 'invalid');
+            // .should('have.attr', 'class')
+            // .and('contains', 'invalid');
+            // ANOTHER WAY TO WRITE IT
+            .should(el => {
+                expect(el.attr('class')).not.to.be.undefined;
+                expect(el.attr('class')).contains('invalid');
+            });
 
     })
 });
