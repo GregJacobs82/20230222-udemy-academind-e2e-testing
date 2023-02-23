@@ -21,7 +21,7 @@ describe('contact form', () => {
                 expect(el.text()).to.eq('Send Message');
                 expect(el.attr('disabled')).to.be.undefined;
             });
-        cy.get('@btnSubmit').click();
+        cy.submitForm(); // cy.get('@btnSubmit').click();
         cy.get('@btnSubmit')
             .contains('Sending...')
             .and('have.attr', 'disabled');
