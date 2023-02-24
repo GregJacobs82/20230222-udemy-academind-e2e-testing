@@ -12,6 +12,8 @@ cypress/logs
 .idea
 **/*.mp4
 **/screenshots
+.cache
+**/build
 
 # IGNORE LOCAL ENV CONFIG
 cypress.env.json
