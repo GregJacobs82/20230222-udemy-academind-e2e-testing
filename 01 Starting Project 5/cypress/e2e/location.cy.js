@@ -37,6 +37,10 @@ describe('share location', () => {
             cy.stub(win.navigator.clipboard, 'writeText')
                 .as('saveToClipboard')
                 .resolves();
+
+            // SPY THE LOCATION URL
+            cy.spy(win.localStorage, 'setItem').as('setLocalLocation');
+            cy.spy(win.localStorage, 'getItem').as('getLocalLocation');
         });
     });
 
@@ -51,10 +55,24 @@ describe('share location', () => {
         cy.get('[data-cy="name-input"]').type(name);
         cy.get('[data-cy="get-loc-btn"]').click();
         cy.get('[data-cy="share-loc-btn"]').click();
+
+        // VERIFY CLIPBAORD WAS STUBBED
         cy.get('@saveToClipboard')
             .should('have.been.called')
             .and('have.been.calledWithMatch',
                 new RegExp(`${latitude}.*${longitude}.*${encodeURI(name)}`)
             );
+
+        // VERIFY LOCAL STORAGE WAS SPIED
+        cy.get('@setLocalLocation')
+            .should('have.been.called')
+            .and('have.been.calledWithMatch',
+                name,
+                new RegExp(`${latitude}.*${longitude}.*${encodeURI(name)}`)
+            );
+
+        // CLICK AGAIN AND VERIFY IT USES LOCAL STORAGE
+        cy.get('[data-cy="share-loc-btn"]').click();
+        cy.get('@getLocalLocation').should('have.been.called');
     });
 });
