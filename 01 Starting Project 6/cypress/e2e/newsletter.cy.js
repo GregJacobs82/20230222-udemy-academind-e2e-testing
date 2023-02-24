@@ -22,4 +22,16 @@ describe('Newsletter', () => {
         cy.wait('@subscribe')
         cy.contains('This email is already subscribed.');
     });
+
+    it('should successfully create a new contact', () => {
+        // TEST API ONLY! - VIDEO: https://www.udemy.com/course/cypress-end-to-end-testing-getting-started/learn/lecture/36409772
+        cy.request({
+            method: 'POST',
+            url: '/newsletter',
+            body: { email: 'test@example.com' },
+            form: true,
+        }).then(res => {
+            expect(res.status).to.eq(201);
+        })
+    });
 });
