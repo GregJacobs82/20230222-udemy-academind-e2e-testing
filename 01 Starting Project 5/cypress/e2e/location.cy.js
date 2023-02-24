@@ -4,6 +4,7 @@ describe('share location', () => {
     let name;
     let latitude;
     let longitude;
+    let expectedUrl;
 
     beforeEach(()=> {
         // ASSIGN USER FIXTURE ALIAS DATA TO GLOBAL VARS
@@ -11,6 +12,7 @@ describe('share location', () => {
             name = user.name;
             latitude = user.coords.latitude;
             longitude = user.coords.longitude;
+            expectedUrl = new RegExp(`${latitude}.*${longitude}.*${encodeURI(name)}`);
         });
         // NOTE: Alternative method is to assign the user fixture to an alias, then destructure data where needed in each individual test. BUT I prefer it here in beforeEach - Greg
         // EXAMPLE:
@@ -59,17 +61,12 @@ describe('share location', () => {
         // VERIFY CLIPBAORD WAS STUBBED
         cy.get('@saveToClipboard')
             .should('have.been.called')
-            .and('have.been.calledWithMatch',
-                new RegExp(`${latitude}.*${longitude}.*${encodeURI(name)}`)
-            );
+            .and('have.been.calledWithMatch', expectedUrl);
 
         // VERIFY LOCAL STORAGE WAS SPIED
         cy.get('@setLocalLocation')
             .should('have.been.called')
-            .and('have.been.calledWithMatch',
-                name,
-                new RegExp(`${latitude}.*${longitude}.*${encodeURI(name)}`)
-            );
+            .and('have.been.calledWithMatch', name, expectedUrl);
 
         // CLICK AGAIN AND VERIFY IT USES LOCAL STORAGE
         cy.get('[data-cy="share-loc-btn"]').click();
