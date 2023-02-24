@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress';
 
-import { seed } from './prisma/seed-test';
+import { seed } from 'prisma/seed-test';
 
 export default defineConfig({
   e2e: {
