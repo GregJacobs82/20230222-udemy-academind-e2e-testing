@@ -1,20 +1,30 @@
 /// <reference types="cypress" />
 
 describe('share location', () => {
+    const latitude = 32.776474;
+    const longitude = -79.931053;
+    const name = 'Greg';
+
     beforeEach(()=> {
         cy.visit('/').then(win => {
+            // STUB GET USER LOCATION
             cy.stub(win.navigator.geolocation, 'getCurrentPosition')
                 .as('getUserPosition')
                 .callsFake(cb => {
                     setTimeout(() => { // todo: i don't like this setTimeout 👎🏼
                         cb({
                             coords: {
-                                latitude: '32.776474',
-                                longitude: '-79.931053',
+                                latitude,
+                                longitude,
                             }
                         });
                     }, 100);
                 });
+
+            // STUB CLIPBOARD
+            cy.stub(win.navigator.clipboard, 'writeText')
+                .as('saveToClipboard')
+                .resolves();
         });
     });
 
@@ -26,8 +36,13 @@ describe('share location', () => {
     });
 
     it('should share a location URL', () => {
-        cy.get('[data-cy="name-input"]').type('Greg');
+        cy.get('[data-cy="name-input"]').type(name);
         cy.get('[data-cy="get-loc-btn"]').click();
-        // ... still working...
+        cy.get('[data-cy="share-loc-btn"]').click();
+        cy.get('@saveToClipboard')
+            .should('have.been.called')
+            .and('have.been.calledWithMatch',
+                new RegExp(`${latitude}.*${longitude}.*${encodeURI(name)}`)
+            );
     });
 });
