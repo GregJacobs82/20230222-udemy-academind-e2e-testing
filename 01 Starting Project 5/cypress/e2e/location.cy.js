@@ -1,11 +1,23 @@
 /// <reference types="cypress" />
 
 describe('share location', () => {
-    const latitude = 32.776474;
-    const longitude = -79.931053;
-    const name = 'Greg';
+    let name;
+    let latitude;
+    let longitude;
 
     beforeEach(()=> {
+        // ASSIGN USER FIXTURE ALIAS DATA TO GLOBAL VARS
+        cy.fixture('user1.json').then(user => {
+            name = user.name;
+            latitude = user.coords.latitude;
+            longitude = user.coords.longitude;
+        });
+        // NOTE: Alternative method is to assign the user fixture to an alias, then destructure data where needed in each individual test. BUT I prefer it here in beforeEach - Greg
+        // EXAMPLE:
+        //      cy.fixture('user1.json').as('user');
+        //      ... later in the individual test, use @alias like:
+        //      cy.get('@user').then(user => { const lat = user.coords.latitude });
+
         cy.visit('/').then(win => {
             // STUB GET USER LOCATION
             cy.stub(win.navigator.geolocation, 'getCurrentPosition')
