@@ -36,7 +36,7 @@
 //   }
 // }
 
-Cypress.Commands.add('submitUser', (url, email, password) => {
+Cypress.Commands.add('userLogin', (url='/login', email='test@example.com', password='testpassword') => {
   cy.visit(url);
   cy.get('[data-cy="auth-email"]').click();
   cy.get('[data-cy="auth-email"]').type(email);
