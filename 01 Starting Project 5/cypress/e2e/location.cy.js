@@ -7,6 +7,8 @@ describe('share location', () => {
     let expectedUrl;
 
     beforeEach(()=> {
+        cy.clock(); // this is required for manipulating the setTimeout 2000 on the info-message - VIDEO: https://www.udemy.com/course/cypress-end-to-end-testing-getting-started/learn/lecture/36409722#notes
+
         // ASSIGN USER FIXTURE ALIAS DATA TO GLOBAL VARS
         cy.fixture('user1.json').then(user => {
             name = user.name;
@@ -71,5 +73,12 @@ describe('share location', () => {
         // CLICK AGAIN AND VERIFY IT USES LOCAL STORAGE
         cy.get('[data-cy="share-loc-btn"]').click();
         cy.get('@getLocalLocation').should('have.been.called');
+
+        // CHECK THE INFO MESSAGE APPEARS AND DISAPPEARS
+        cy.get('[data-cy="info-message"]')
+            .should('be.visible')
+            .and('have.class', 'visible');
+        cy.tick(2000); // MANIPULATE THE CLOCK! - NOTE: cy.clock() is required "before" the test is initialized (see in beforeEch()) - VIDEO: https://www.udemy.com/course/cypress-end-to-end-testing-getting-started/learn/lecture/36409722#notes
+        cy.get('[data-cy="info-message"]').should('not.be.visible');
     });
 });
