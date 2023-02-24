@@ -1,4 +1,6 @@
 describe('Newsletter', () => {
+    const testEmail = 'test@example.com';
+
     beforeEach(() => {
         cy.task('seedDatabase');
     });
@@ -7,7 +9,7 @@ describe('Newsletter', () => {
         cy.intercept('POST', '/newsletter*', { status: 201 }) // intercept any HTTP request localhost:3000/newsletter?anything - VIDEO: https://www.udemy.com/course/cypress-end-to-end-testing-getting-started/learn/lecture/36409762
             .as('subscribe');
         cy.visit('/');
-        cy.get('[data-cy="newsletter-email"]').type('test@example.com');
+        cy.get('[data-cy="newsletter-email"]').type(testEmail);
         cy.get('[data-cy="newsletter-submit"]').click();
         cy.wait('@subscribe')
         cy.contains('Thanks for signing up!');
@@ -17,7 +19,7 @@ describe('Newsletter', () => {
         cy.intercept('POST', '/newsletter*', { message: 'This email is already subscribed.' }) // Stop HTTP request & provide message response - VIDEO: https://www.udemy.com/course/cypress-end-to-end-testing-getting-started/learn/lecture/36409770
             .as('subscribe');
         cy.visit('/');
-        cy.get('[data-cy="newsletter-email"]').type('test@example.com');
+        cy.get('[data-cy="newsletter-email"]').type(testEmail);
         cy.get('[data-cy="newsletter-submit"]').click();
         cy.wait('@subscribe')
         cy.contains('This email is already subscribed.');
@@ -28,7 +30,7 @@ describe('Newsletter', () => {
         cy.request({
             method: 'POST',
             url: '/newsletter',
-            body: { email: 'test@example.com' },
+            body: { email: testEmail },
             form: true,
         }).then(res => {
             expect(res.status).to.eq(201);
