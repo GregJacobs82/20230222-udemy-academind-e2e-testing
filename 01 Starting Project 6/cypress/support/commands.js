@@ -36,14 +36,13 @@
 //   }
 // }
 
-Cypress.Commands.add('login', () => {
-  cy.visit('/login');
+Cypress.Commands.add('submitUser', (email, password) => {
   cy.get('[data-cy="auth-email"]').click();
-  cy.get('[data-cy="auth-email"]').type('test@example.com');
-  cy.get('[data-cy="auth-password"]').type('testpassword');
+  cy.get('[data-cy="auth-email"]').type(email);
+  cy.get('[data-cy="auth-password"]').type(password);
   cy.get('[data-cy="auth-submit"]').click();
   cy.location('pathname').should('eq', '/takeaways');
-  cy.getCookie('__session').its('value').should('not.be.empty');
+  cy.getCookie('__session').its('value').should('not.be.empty'); // VIDEO: https://www.udemy.com/course/cypress-end-to-end-testing-getting-started/learn/lecture/36409782
 });
 
 // the below code snippet is required to handle a React hydration bug that would cause tests to fail
