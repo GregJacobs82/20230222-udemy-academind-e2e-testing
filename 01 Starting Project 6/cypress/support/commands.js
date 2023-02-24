@@ -36,7 +36,8 @@
 //   }
 // }
 
-Cypress.Commands.add('submitUser', (email, password) => {
+Cypress.Commands.add('submitUser', (url, email, password) => {
+  cy.visit(url);
   cy.get('[data-cy="auth-email"]').click();
   cy.get('[data-cy="auth-email"]').type(email);
   cy.get('[data-cy="auth-password"]').type(password);
